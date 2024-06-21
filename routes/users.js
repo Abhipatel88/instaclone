@@ -1,49 +1,15 @@
-const mongoose = require('mongoose');
-const plm = require("passport-local-mongoose");
+const mongoose =require('mongoose'); // require mongoose for use this db
+const plm = require('passport-local-mongoose'); 
+mongoose.connect("mongodb://127.0.0.1:27017/insta"); // mongoose connext to connect the db
+const userSchema = mongoose.Schema({  /* it is use for createing a schema*/
+  username:String,
+  name:String,
+  email:String,
+  password:String,
+  profileImage:String,
+  posts:[{type:mongoose.Schema.Types.ObjectId, ref:"post"}],
 
-mongoose.connect("mongodb://127.0.0.1:27017/instainsta");
 
-const userSchema = mongoose.Schema({
-  username: String,
-  name: String,
-  email: String,
-  password: String,
-  picture: {
-    type: String,
-    default: "def.png"
-  },
-  contact: String,
-  bio: String,
-  stories: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "story" 
-    }
-  ],
-  saved: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "post" 
-    }
-  ],
-  posts: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "post" 
-  }],
-  followers: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "user" 
-    } 
-  ],
-  following: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "user" 
-    }
-  ]
-})
-
-userSchema.plugin(plm);
-
-module.exports = mongoose.model("user", userSchema);
+});
+userSchema.plugin(plm) //aa use thay for deseriallize user and seriallized user which we use in app.js file
+module.exports=mongoose.model("user",userSchema) // use for make user model so wwe can use for CRUD operations
